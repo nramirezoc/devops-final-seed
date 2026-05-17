@@ -27,7 +27,8 @@ jobs:
 
       - name: Ejecutar tests
         run: |
-          pytest -v
+          mkdir -p reports
+          pytest -v > reports/test-report.txt
 
       - name: Construir imagen Docker
         run: |
@@ -37,4 +38,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-report
-          path: .
+          path: reports/
