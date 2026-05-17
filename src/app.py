@@ -1,8 +1,18 @@
 from flask import Flask, request, jsonify
+import logging
 import sqlite3
 import os
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s %(message)s'
+)
+
+metrics = PrometheusMetrics(app)
+
 DB_PATH = os.environ.get("DB_PATH", "tasks.db")
 
 
@@ -32,11 +42,23 @@ init_db()
 
 @app.route("/", methods=["GET"])
 def index():
+    app.logger.info("Endpoint / ejecutado")
+
     return jsonify({"name": "To-Do API", "version": "1.0.0", "endpoints": ["/tasks"]})
+
+
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({
+        "status": "healthy"
+    }), 200
 
 
 @app.route("/tasks", methods=["GET"])
 def list_tasks():
+
+    app.logger.info("Listado de tareas solicitado")
+
     conn = get_db()
     tasks = conn.execute("SELECT * FROM tasks ORDER BY created_at DESC").fetchall()
     conn.close()
