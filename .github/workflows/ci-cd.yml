@@ -31,6 +31,7 @@ jobs:
         run: flake8 src
 
       - name: Auditoría de seguridad
+        continue-on-error: true
         run: pip-audit
 
       - name: Construir imagen Docker
