@@ -37,14 +37,11 @@ jobs:
       - name: Construir imagen Docker
         run: docker build -t todo-api:${{ github.run_number }} .
 
-      - name: Debug Nexus URL
-        run: |
-          echo "${{ secrets.NEXUS_URL }}"
 
-      - name: Tag imagen
+      - name: Tag image
         run: |
           docker tag devops-final-seed-todo-api:latest \
-          ${{ secrets.NEXUS_URL }}/docker-hosted/todo-api:${{ github.run_number }}      
+          ec2-3-80-242-135.compute-1.amazonaws.com:8082/docker-hosted/todo-api:${{ github.run_number }}     
 
       - name: Configure Docker insecure registry
         run: |
