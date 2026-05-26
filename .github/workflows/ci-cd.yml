@@ -45,7 +45,7 @@ jobs:
       - name: Configure Docker insecure registry
         run: |
           echo '{
-            "insecure-registries": ["ec2-54-80-122-36.compute-1.amazonaws.com:8082"]
+            "insecure-registries": ["ec2-3-80-242-135.compute-1.amazonaws.com:8082"]
           }' | sudo tee /etc/docker/daemon.json
 
           sudo systemctl restart docker    
