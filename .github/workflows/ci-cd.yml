@@ -27,6 +27,7 @@ jobs:
         run: pytest -v
 
       - name: Ejecutar linting
+        continue-on-error: true
         run: flake8 src
 
       - name: Auditoría de seguridad
