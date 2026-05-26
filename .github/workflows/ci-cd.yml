@@ -35,11 +35,12 @@ jobs:
         run: pip-audit
 
       - name: Construir imagen Docker
-        run: docker build -t todo-api:v1 .
+        run: docker build -t todo-api:${{ github.run_number }} .
 
       - name: Tag imagen
         run: |
-          docker tag todo-api:v1 ${{ secrets.NEXUS_URL }}/docker-hosted/todo-api:v1
+          docker tag todo-api:${{ github.run_number }} \
+          ${{ secrets.NEXUS_URL }}/docker-hosted/todo-api:${{ github.run_number }}
 
       - name: Configure Docker insecure registry
         run: |
@@ -55,4 +56,5 @@ jobs:
 
       - name: Push Nexus
         run: |
-          docker push ${{ secrets.NEXUS_URL }}/docker-hosted/todo-api:v1
+          docker push \
+          ${{ secrets.NEXUS_URL }}/docker-hosted/todo-api:${{ github.run_number }}
