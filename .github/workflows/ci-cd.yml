@@ -39,8 +39,8 @@ jobs:
 
       - name: Tag imagen
         run: |
-          docker tag todo-api:${{ github.run_number }} \
-          ${{ secrets.NEXUS_URL }}/docker-hosted/todo-api:${{ github.run_number }}
+          docker tag devops-final-seed-todo-api:latest \
+          ${{ secrets.NEXUS_URL }}/docker-hosted/todo-api:${{ github.run_number }}      
 
       - name: Configure Docker insecure registry
         run: |
