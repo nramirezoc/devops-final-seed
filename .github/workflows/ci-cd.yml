@@ -37,6 +37,10 @@ jobs:
       - name: Construir imagen Docker
         run: docker build -t todo-api:${{ github.run_number }} .
 
+      - name: Debug Nexus URL
+        run: |
+          echo "${{ secrets.NEXUS_URL }}"
+
       - name: Tag imagen
         run: |
           docker tag devops-final-seed-todo-api:latest \
