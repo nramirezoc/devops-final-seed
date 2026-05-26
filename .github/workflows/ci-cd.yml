@@ -4,12 +4,9 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  test-and-build:
+  ci-cd:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,18 +21,28 @@ jobs:
       - name: Instalar dependencias
         run: |
           pip install -r requirements.txt
+          pip install pytest flake8 pip-audit
 
       - name: Ejecutar tests
-        run: |
-          mkdir -p reports
-          pytest -v > reports/test-report.txt
+        run: pytest -v
+
+      - name: Ejecutar linting
+        run: flake8 src
+
+      - name: Auditoría de seguridad
+        run: pip-audit
 
       - name: Construir imagen Docker
-        run: |
-          docker build -t todo-api .
+        run: docker build -t todo-api:v1 .
 
-      - name: Guardar reporte de tests
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-report
-          path: reports/
+      - name: Tag imagen
+        run: |
+          docker tag todo-api:v1 ${{ secrets.NEXUS_URL }}/docker-hosted/todo-api:v1
+
+      - name: Login Nexus
+        run: |
+          echo "${{ secrets.NEXUS_PASSWORD }}" | docker login ${{ secrets.NEXUS_URL }} -u ${{ secrets.NEXUS_USERNAME }} --password-stdin
+
+      - name: Push Nexus
+        run: |
+          docker push ${{ secrets.NEXUS_URL }}/docker-hosted/todo-api:v1
