@@ -41,6 +41,14 @@ jobs:
         run: |
           docker tag todo-api:v1 ${{ secrets.NEXUS_URL }}/docker-hosted/todo-api:v1
 
+      - name: Configure Docker insecure registry
+        run: |
+          echo '{
+            "insecure-registries": ["ec2-54-235-238-250.compute-1.amazonaws.com:8082"]
+          }' | sudo tee /etc/docker/daemon.json
+
+          sudo systemctl restart docker    
+
       - name: Login Nexus
         run: |
           echo "${{ secrets.NEXUS_PASSWORD }}" | docker login ${{ secrets.NEXUS_URL }} -u ${{ secrets.NEXUS_USERNAME }} --password-stdin
