@@ -40,8 +40,8 @@ jobs:
 
       - name: Tag image
         run: |
-          docker tag devops-final-seed-todo-api:latest \
-          ec2-3-80-242-135.compute-1.amazonaws.com:8082/docker-hosted/todo-api:${{ github.run_number }}     
+          docker tag todo-api:${{ github.run_number }} \
+          ec2-3-80-242-135.compute-1.amazonaws.com:8082/docker-hosted/todo-api:${{ github.run_number }}    
 
       - name: Configure Docker insecure registry
         run: |
