@@ -41,12 +41,12 @@ jobs:
       - name: Tag image
         run: |
           docker tag todo-api:${{ github.run_number }} \
-          ec2-3-80-242-135.compute-1.amazonaws.com:8082/docker-hosted/todo-api:${{ github.run_number }}    
+          ec2-18-214-240-5.compute-1.amazonaws.com:8082/docker-hosted/todo-api:${{ github.run_number }}    
 
       - name: Configure Docker insecure registry
         run: |
           echo '{
-            "insecure-registries": ["ec2-3-80-242-135.compute-1.amazonaws.com:8082"]
+            "insecure-registries": ["ec2-18-214-240-5.compute-1.amazonaws.com:8082"]
           }' | sudo tee /etc/docker/daemon.json
 
           sudo systemctl restart docker    
